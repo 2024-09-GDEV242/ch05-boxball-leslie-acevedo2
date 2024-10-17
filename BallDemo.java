@@ -21,34 +21,57 @@ public class BallDemo
     }
 
     /**
-     * Simulate two bouncing balls
+     * Method to Simulate multiple bouncing balls
      */
-    public void bounce()
+    public void boxBounce(int numBalls)
     {
-        int ground = 400;   // position of the ground line
-
+        if (numBalls <5 || numBalls > 30) {
+            System.out.println("Number of balls must be between 5 and 30.");
+            return;
+        }
+        
+        // drawing of box 
         myCanvas.setVisible(true);
-
-        // draw the ground
         myCanvas.setForegroundColor(Color.BLACK);
-        myCanvas.drawLine(50, ground, 550, ground);
+        
+        //top line 
+        myCanvas.drawLine(50, 50, 550, 50);
+        
+        //left line 
+        myCanvas.drawLine(50, 50, 50, 450);
+        
+        //right line 
+        myCanvas.drawLine(550, 50, 550, 450);
+        
+        //bottom line
+        myCanvas.drawLine(50, 450, 550, 450);
+        
+        // width of box 
+        int boxWidth = 500;
+        
+        //height of box 
+        int boxHeight = 400;
 
-        // create and show the balls
-        BouncingBall ball = new BouncingBall(50, 50, 16, Color.BLUE, ground, myCanvas);
-        ball.draw();
-        BouncingBall ball2 = new BouncingBall(70, 80, 20, Color.RED, ground, myCanvas);
-        ball2.draw();
-
-        // make them bounce
-        boolean finished =  false;
+        // array to hold the balls 
+        BoxBall[] balls= new BoxBall[numBalls];
+        
+        //initialize balls with random positions and speeds 
+        for (int i = 0; i < numBalls; i++) {
+            balls[i] = new BoxBall(boxWidth, boxHeight, 20, myCanvas);
+            
+            //ball diameter
+            balls[i].draw();
+        }
+        
+        //make balls move 
+        boolean finished = false;
         while (!finished) {
-            myCanvas.wait(50);           // small delay
+            myCanvas.wait(50);
+        }
+        
+        //move all balls 
+        for (BoxBall ball : balls) {
             ball.move();
-            ball2.move();
-            // stop once ball has travelled a certain distance on x axis
-            if(ball.getXPosition() >= 550 || ball2.getXPosition() >= 550) {
-                finished = true;
-            }
+        }
         }
     }
-}
