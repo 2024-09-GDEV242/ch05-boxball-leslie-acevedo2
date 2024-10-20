@@ -1,4 +1,3 @@
-import java.awt.Color;
 
 /**
  * Class BallDemo - a short demonstration showing animation with the 
@@ -7,6 +6,7 @@ import java.awt.Color;
  * @author Michael Kölling and David J. Barnes
  * @version 2016.02.29
  */
+import java.awt.Color;
 
 public class BallDemo   
 {
@@ -18,6 +18,7 @@ public class BallDemo
     public BallDemo()
     {
         myCanvas = new Canvas("Ball Demo", 600, 500);
+        myCanvas.setVisible(true);
     }
 
     /**
@@ -31,47 +32,44 @@ public class BallDemo
         }
         
         // drawing of box 
-        myCanvas.setVisible(true);
         myCanvas.setForegroundColor(Color.BLACK);
+        int boxWidth = 400;
+        int boxHeight = 400; 
+        int boxX = 50;
+        int boxY = 50;
         
         //top line 
-        myCanvas.drawLine(50, 50, 550, 50);
+        myCanvas.drawLine(boxX, boxY, boxX + boxWidth, boxY);
         
         //left line 
-        myCanvas.drawLine(50, 50, 50, 450);
+        myCanvas.drawLine(boxX, boxY, boxX, boxY + boxHeight);
         
         //right line 
-        myCanvas.drawLine(550, 50, 550, 450);
+        myCanvas.drawLine(boxX + boxWidth, boxY, boxX + boxWidth, boxY + boxHeight);
         
         //bottom line
-        myCanvas.drawLine(50, 450, 550, 450);
-        
-        // width of box 
-        int boxWidth = 500;
-        
-        //height of box 
-        int boxHeight = 400;
-
+        myCanvas.drawLine(boxX, boxY + boxHeight, boxX + boxWidth, boxY + boxHeight);
+    
         // array to hold the balls 
         BoxBall[] balls= new BoxBall[numBalls];
         
         //initialize balls with random positions and speeds 
         for (int i = 0; i < numBalls; i++) {
-            balls[i] = new BoxBall(boxWidth, boxHeight, 20, myCanvas);
-            
+            balls[i] = new BoxBall(boxWidth, boxHeight,boxX, boxY,20, myCanvas);
+
             //ball diameter
             balls[i].draw();
         }
         
         //make balls move 
-        boolean finished = false;
-        while (!finished) {
-            myCanvas.wait(50);
-        }
         
-        //move all balls 
-        for (BoxBall ball : balls) {
+        while(1 == 1){
+        myCanvas.wait(50);
+           for (BoxBall ball : balls) {
             ball.move();
+        } 
         }
+        //move all balls 
+        
         }
     }

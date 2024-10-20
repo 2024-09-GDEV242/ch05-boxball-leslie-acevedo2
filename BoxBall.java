@@ -10,33 +10,37 @@ import java.util.Random;
 
 public class BoxBall
 {
-    // instance variables - replaced with my own 
+    // instance variables
     private int xPosition;
     private int yPosition;
     private int diameter;
-    private Color color;
     private int xSpeed;
     private int ySpeed;
+    private Color color;
     private Canvas canvas;
     private int boxWidth;
     private int boxHeight;
+    private int boxXmin;
+    private int boxYmin;
 
     /**
      * Constructor for objects of class BoxBall
      */
-    public BoxBall(int boxWidth, int boxHeight, int diameter, Canvas canvas)
+    public BoxBall(int boxWidth, int boxHeight, int boxXmin, int boxYmin, int diameter, Canvas canvas)
     {
     // initialise instance variables
-    Random rand = new Random();
     this.boxWidth = boxWidth;
     this.boxHeight = boxHeight;
     this.diameter = diameter;
     this.canvas = canvas;
+    this.boxYmin = boxYmin;
+    this.boxXmin = boxXmin;
         
     // random position within box 
-    this.xPosition = rand.nextInt(boxWidth - diameter);
-    this.yPosition = rand.nextInt(boxHeight - diameter);
-    
+    Random rand = new Random();
+    this.xPosition = (int)(Math.random() * ((boxWidth + boxXmin -diameter ) - (boxXmin + diameter) + 1)) + boxXmin + diameter;
+    this.yPosition = (int)(Math.random() * ((boxHeight +boxYmin -diameter) - (boxYmin + diameter) + 1)) + boxYmin + diameter;
+
     // random speed between -7 and +7
     this.xSpeed = getRandomSpeed(rand);
     this.ySpeed = getRandomSpeed(rand);
@@ -44,12 +48,13 @@ public class BoxBall
     // assign a random color
     this.color = new Color(rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
     
+    
     }
     
     //helper method 
     private int getRandomSpeed(Random rand) {
         int speed = rand.nextInt(14) - 7;
-        while (speed ==0) {
+        if(speed <= 0){
             speed = rand.nextInt(14) - 7;
         }
         return speed;
@@ -59,33 +64,19 @@ public class BoxBall
     public void move() {
         //erase ball at current position 
         erase();
-        
         // update position
         xPosition += xSpeed;
         yPosition += ySpeed;
-        
-        // bounce off the left and right walls 
-        if (xPosition <= 0 || xPosition >= (boxWidth - diameter)) {
+        if(xPosition <= boxXmin + (diameter)|| xPosition >= (boxWidth) + (diameter) ){
             xSpeed = -xSpeed;
         }
-        
-        if(xPosition >= (boxWidth - diameter)) {
-            xPosition = boxWidth - diameter;
-            xSpeed = -xSpeed;
-        }
-        
-        // bounce off the top and bottom walls 
-        if (yPosition <= 0 || yPosition >= (boxHeight - diameter)) {
-            ySpeed = -ySpeed;
-        }
-        
-        if (yPosition >= (boxHeight - diameter)) {
-            yPosition = boxHeight - diameter;
+        if(yPosition <= boxYmin + (diameter) || yPosition >= (boxHeight) + (diameter)){
             ySpeed = -ySpeed;
         }
         
         // draw the ball at its new position 
         draw();
+        
     }
     
     // draw ball on canvas 
@@ -98,4 +89,5 @@ public class BoxBall
     public void erase() {
         canvas.eraseCircle(xPosition, yPosition, diameter);
     }
+    
 }
